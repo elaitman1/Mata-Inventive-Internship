@@ -27,10 +27,10 @@ class App extends React.Component {
       });
   }
 
-  takePhoto = async() =>{
-    const config = {
-      sizeFactor: 1
-    };
+  // takePhoto = async() =>{
+  //   const config = {
+  //     sizeFactor: 1
+  //   };
 
     let dataUri = this.cameraPhoto.getDataUri(config);
     await this.setState({ dataUri });
