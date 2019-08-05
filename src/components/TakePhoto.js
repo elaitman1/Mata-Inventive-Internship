@@ -32,8 +32,8 @@ class App extends React.Component {
   //     sizeFactor: 1
   //   };
 
-    let dataUri = this.cameraPhoto.getDataUri(config);
-    await this.setState({ dataUri });
+    // let dataUri = this.cameraPhoto.getDataUri(config);
+    // await this.setState({ dataUri });
 ///////////////////////////////////////////////////////////////////
 debugger
 
