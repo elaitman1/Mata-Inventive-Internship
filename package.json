@@ -6,8 +6,12 @@
   "dependencies": {
     "lodash": "^4.17.15",
     "react": "^16.8.6",
+    "react-cloud-vision-api": "^0.3.0",
     "react-dom": "^16.8.6",
-    "react-scripts": "3.0.1"
+    "react-html5-camera-photo": "^1.4.3",
+    "react-render-html": "^0.6.0",
+    "react-scripts": "3.0.1",
+    "react-webcam": "^1.1.1"
   },
   "scripts": {
     "start": "react-scripts start",
@@ -29,5 +33,8 @@
       "last 1 firefox version",
       "last 1 safari version"
     ]
+  },
+  "devDependencies": {
+    "html-loader": "^0.5.5"
   }
 }

@@ -3,11 +3,13 @@ import StartJob from "./startJob";
 // import PreparationChecklist from "./preparationChecklist";
 import Inspection from "./inspection";
 // import Timer from "./timer";
+import TakePhoto from './TakePhoto'
 
 export default class Machine extends Component {
   state = {
     machine: this.props.machine,
-    selectedTask: null
+    selectedTask: null,
+    cameraView: false
   }
 
   returnToMain = () => {
@@ -25,10 +27,24 @@ export default class Machine extends Component {
     this.setState({ selectedTask: null })
   }
 
+  toggleCamera = () => {
+    this.setState({ cameraView: !this.state.cameraView })
+  }
+
   renderTask = () => {
+    if (this.state.cameraView){
+      return <TakePhoto
+      toggleCamera={this.toggleCamera}
+      />
+    }
     switch (this.state.selectedTask) {
       case "Start Job":
-        return <StartJob hideTask={this.hideTask} />
+        return <StartJob
+        toggleCamera={this.toggleCamera}
+        cameraView={this.state.cameraView}
+        hideTask={this.hideTask}
+        />
+
       // case "Preparation Checklist":
       //   return <PreparationChecklist />
       case "Inspection":
