@@ -27,60 +27,49 @@ class App extends React.Component {
       });
   }
 
-  // takePhoto = async() =>{
-  //   const config = {
-  //     sizeFactor: 1
-  //   };
+  takePhoto = async() => {
+    const config = {
+      sizeFactor: 1
+    };
 
-    // let dataUri = this.cameraPhoto.getDataUri(config);
+    let dataUri = this.cameraPhoto.getDataUri(config);
+    console.log(dataUri)
     // await this.setState({ dataUri });
 ///////////////////////////////////////////////////////////////////
-// debugger
-
-// <!DOCTYPE html>
-<html lang="en" dir="ltr">
-<head>
-  <meta charset="utf-8">
-  <title>GCloud</title>
-  <script type="text/javascript">
-  var b=JSON.stringify({"requests":[{  "image":{    "source":{"imageUri":"https://www.mtansw.com.au/site/DefaultSite/filesystem/images/shop/Workshop-Items/204_WorkshopItems_A5SizeJobCards.png"}}  ,  "features": [{"type":"TEXT_DETECTION","maxResults":5}]    } ]});
-  var e=new XMLHttpRequest;
-  e.onload=function(){console.log(e.responseText)};
-  e.open("POST","https://vision.googleapis.com/v1/images:annotate?key=AIzaSyAPAA-x3y147JdXMGX-rRRHArgTkci8m_g",!0);
-  e.send(b)
-  </script>
-</head>
-<body>
-</body>
-</html>
-
-  //   await fetch('https://vision.googleapis.com/v1/images:annotate?key=AIzaSyCfy0N0DFjJQEUis4VxAGNMSodTyKNSg3Y', {
-  //     method: 'POST',
-  //     headers: {
-  //       'Content-Type': 'application/json',
-  //       'Accept': 'application/json'
-  //     },
-  //   body: JSON.stringify({
-  //     "image": dataUri,
-  //     "features": [{"type":"TEXT_DETECTION","maxResults":5}]
-  //   })
-  // })
-  //   .then(resp => resp.json())
-  //   .then(resp => {
-  //     debugger
-  //   })
 
 
-    // var b=JSON.stringify({"requests":[{  "image":{    "source":{"imageUri":"https://www.mtansw.com.au/site/DefaultSite/filesystem/images/shop/Workshop-Items/204_WorkshopItems_A5SizeJobCards.png"}}  ,  "features": [{"type":"TEXT_DETECTION","maxResults":5}]    } ]});
-    // var e=new XMLHttpRequest;
-    // e.onload=function(){console.log(e.responseText)};
-    // e.open("POST","https://vision.googleapis.com/v1/images:annotate?key=AIzaSyAPAA-x3y147JdXMGX-rRRHArgTkci8m_g",!0);
-    // e.send(b)
+
+
+
+
+  fetch('https://www.matainventive.com/cordovaserver/database/jsonmatavision.php?id=img', {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+        'Accept': 'application/json',
+      },
+    body: JSON.stringify({
+      "image": dataUri
+    })
+  })
+}
+
+
+    // Content-Security-Policy: script-src 'self' https://apis.google.com
+    // <meta http-equiv="Content-Security-Policy" content="default-src 'self'">
+
+
+ // var b=JSON.stringify({"requests":[{ "image":{  "source":{"imageUri":"https://www.mtansw.com.au/site/DefaultSite/filesystem/images/shop/Workshop-Items/204_WorkshopItems_A5SizeJobCards.png"}} , "features": [{"type":"TEXT_DETECTION","maxResults":5}]  } ]});
+ // var e=new XMLHttpRequest;
+ // e.onload=function(){console.log(e.responseText)};
+ // e.open("POST","https://vision.googleapis.com/v1/images:annotate?key=AIzaSyAPAA-x3y147JdXMGX-rRRHArgTkci8m_g",!0);
+ // e.send(b)
+
+
+
 
 /////////////////////////////////////////////////
     // AIzaSyAPAA-x3y147JdXMGX-rRRHArgTkci8m_g 	this is the api
-
-  }
 
   stopCamera () {
     this.cameraPhoto.stopCamera()
@@ -93,6 +82,7 @@ class App extends React.Component {
   }
 
   render () {
+
     return (
       <div className="start-job-container">
 
