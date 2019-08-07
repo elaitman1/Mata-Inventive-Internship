@@ -1,48 +1,23 @@
-import React from 'react';
-import CameraPhoto, { FACING_MODES } from 'jslib-html5-camera-photo';
+import React, { Component } from 'react';
+import Camera, { FACING_MODES, IMAGE_TYPES } from 'react-html5-camera-photo';
+import 'react-html5-camera-photo/build/css/index.css';
 import axios from 'axios';
 
-class App extends React.Component {
-  constructor (props, context) {
-    super(props, context);
-    this.cameraPhoto = null;
-    this.videoRef = React.createRef();
-    this.state = {
-      dataUri: ''
-    }
-  }
+class TakePhoto extends Component {
 
-  componentDidMount(){
-    this.cameraPhoto = new CameraPhoto(this.videoRef.current);
-
-    this.startCameraMaxResolution(FACING_MODES.ENVIRONMENT);
-  }
-
-  startCameraMaxResolution (idealFacingMode) {
-    this.cameraPhoto.startCameraMaxResolution(idealFacingMode)
-      .then(() => {
-        console.log('camera is started !');
-      })
-      .catch((error) => {
-        console.error('Camera not started!', error);
-      });
-  }
-
-  takePhoto = async() =>{
+  onTakePhoto = async(dataUri) => {
+    debugger
     const config = {
       sizeFactor: 1,
       imgCompression: .5
     };
 
-    let dataUri = this.cameraPhoto.getDataUri(config);
-    await this.setState({ dataUri });
-///////////////////////////////////////////////////////////////////
 
 var data={
   requests: [
     {
       image: {
-          content: dataUri.slice(22),
+          content: dataUri.slice(23),
       },
       features: [{
         type: "TEXT_DETECTION",
@@ -60,10 +35,10 @@ await axios({
   })
 
   .then(function (response) {
-    this.stopCamera()
-    debugger
       //handle success
+
       console.log(response);
+      debugger
   })
   .catch(function (error) {
 
@@ -72,73 +47,40 @@ await axios({
   });
 }
 
+  onCameraError (error) {
+    console.error('onCameraError', error);
+  }
 
-    // Content-Security-Policy: script-src 'self' https://apis.google.com
-    // <meta http-equiv="Content-Security-Policy" content="default-src 'self'">
+  onCameraStart (stream) {
+    console.log('onCameraStart');
+  }
 
-
- // var b=JSON.stringify({"requests":[{ "image":{  "source":{"imageUri":"https://www.mtansw.com.au/site/DefaultSite/filesystem/images/shop/Workshop-Items/204_WorkshopItems_A5SizeJobCards.png"}} , "features": [{"type":"TEXT_DETECTION","maxResults":5}]  } ]});
- // var e=new XMLHttpRequest;
- // e.onload=function(){console.log(e.responseText)};
- // e.open("POST","https://vision.googleapis.com/v1/images:annotate?key=AIzaSyAPAA-x3y147JdXMGX-rRRHArgTkci8m_g",!0);
- // e.send(b)
-
-
-
-
-/////////////////////////////////////////////////
-    // AIzaSyAPAA-x3y147JdXMGX-rRRHArgTkci8m_g 	this is the api
-
-  stopCamera () {
-    debugger
-    this.cameraPhoto.stopCamera()
-      .then(() => {
-        console.log('Camera stoped!');
-      })
-      .catch((error) => {
-        console.log('No camera to stop!:', error);
-      });
+  onCameraStop () {
+    console.log('onCameraStop');
   }
 
   render () {
-
     return (
       <div className="start-job-container">
-
-        {this.state.dataUri === ''?
-        <button onClick={ () => {this.takePhoto() }} className="outer-circle"><button className="inner-circle">
-        </button></button> : '' }
-
-        <video
-          ref={this.videoRef}
-          autoPlay="true"
+        <Camera
+          onTakePhoto = { (dataUri) => { this.onTakePhoto(dataUri); } }
+          onCameraError = { (error) => { this.onCameraError(error); } }
+          idealFacingMode = {FACING_MODES.ENVIRONMENT}
+          idealResolution = {{width: 640, height: 480}}
+          imageType = {IMAGE_TYPES.JPG}
+          imageCompression = {0.97}
+          isMaxResolution = {false}
+          isImageMirror = {false}
+          isSilentMode = {true}
+          isDisplayStartCameraError = {true}
+          isFullscreen = {false}
+          sizeFactor = {1}
+          onCameraStart = { (stream) => { this.onCameraStart(stream); } }
+          onCameraStop = { () => { this.onCameraStop(); } }
         />
-
-        {this.state.dataUri === '' ? '' : <img src={this.state.dataUri}/>}
-
       </div>
     );
   }
-} //end of class
+}
 
-export default App;
-
-
-// videoElement.nextSibling.outerHTML
-//after photo is taken this the path where the photo will be
-
-
-
-
-
-
-
-
-
-
-
-
-// <button onClick={ () => {
-//   let facingMode = FACING_MODES.USER;
-//   this.startCamera(facingMode, {});
-// }}> Start user facingMode resolution default </button>
+export default TakePhoto;
