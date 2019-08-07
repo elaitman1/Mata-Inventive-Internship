@@ -1,5 +1,6 @@
 import React from 'react';
 import CameraPhoto, { FACING_MODES } from 'jslib-html5-camera-photo';
+import axios from 'axios';
 
 class App extends React.Component {
   constructor (props, context) {
@@ -27,31 +28,48 @@ class App extends React.Component {
       });
   }
 
-  takePhoto = async() => {
+  takePhoto = async() =>{
     const config = {
-      sizeFactor: 1
+      sizeFactor: 1,
+      imgCompression: .5
     };
 
     let dataUri = this.cameraPhoto.getDataUri(config);
-    console.log(dataUri)
-    // await this.setState({ dataUri });
+    await this.setState({ dataUri });
 ///////////////////////////////////////////////////////////////////
 
-
-
-
-
-
-  fetch('https://www.matainventive.com/cordovaserver/database/jsonmatavision.php?id=img', {
-      method: 'POST',
-      headers: {
-        'Content-Type': 'application/json',
-        'Accept': 'application/json',
+var data={
+  requests: [
+    {
+      image: {
+          content: dataUri.slice(22),
       },
-    body: JSON.stringify({
-      "image": dataUri
-    })
+      features: [{
+        type: "TEXT_DETECTION",
+        maxResults: 5
+      }]
+    }
+  ]
+}
+
+await axios({
+    method: 'post',
+    url: 'https://vision.googleapis.com/v1/images:annotate?key=AIzaSyCfy0N0DFjJQEUis4VxAGNMSodTyKNSg3Y',
+    data,
+    config: { headers: {'Content-Type': 'multipart/form-data' }}
   })
+
+  .then(function (response) {
+    this.stopCamera()
+    debugger
+      //handle success
+      console.log(response);
+  })
+  .catch(function (error) {
+
+      //handle error
+      console.log(error);
+  });
 }
 
 
@@ -72,6 +90,7 @@ class App extends React.Component {
     // AIzaSyAPAA-x3y147JdXMGX-rRRHArgTkci8m_g 	this is the api
 
   stopCamera () {
+    debugger
     this.cameraPhoto.stopCamera()
       .then(() => {
         console.log('Camera stoped!');
@@ -100,7 +119,7 @@ class App extends React.Component {
       </div>
     );
   }
-}
+} //end of class
 
 export default App;
 
